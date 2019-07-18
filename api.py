@@ -59,7 +59,7 @@ def auth():
 		m2.update(content.encode("UTF-8"))
 		if m2.hexdigest() == token:
 			return
-	return abort(403, "no permission")
+	return abort(403, "FORBIDDEN")
 
 
 if __name__ == '__main__':
