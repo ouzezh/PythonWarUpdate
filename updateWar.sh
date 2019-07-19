@@ -25,7 +25,7 @@ fi
 wp=$(pwd)
 cd ${tomcatPath}
 
-ps -ef | grep "${tomcatPath}/" | grep -v "grep " && res=$? || res=$?
+ps -ef | grep "${tomcatPath}" | grep -v "grep " | grep -v $0 && res=$? || res=$?
 if [ ${res} -eq 0 ]
 then
   sh bin/shutdown.sh
@@ -46,4 +46,4 @@ else
 fi
 
 sh bin/startup.sh
-ps -ef | grep "${tomcatPath}/" | grep -v "grep "
+ps -ef | grep "${tomcatPath}" | grep -v "grep " | grep -v $0
