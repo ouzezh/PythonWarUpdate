@@ -32,7 +32,7 @@ then
   sleep 10s
 fi
 
-rm -rf webapps/${context}
+rm -rf webapps/${context}/*
 if [ "${fileType}" = "war" ]
 then
   unzip -o $wp/upload/${fileName} -d webapps/${context}
