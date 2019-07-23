@@ -28,12 +28,12 @@ class WarUpdate(Resource):
             fileName = args.get('fileName')
             if not fileName:
                 abort(500, "fileName is null")
-            fileUpload = request.files.get('fileUpload')
-            if not fileUpload:
-                abort(500, "fileUpload not exists")
+            file = request.files.get('file')
+            if not file:
+                abort(500, "file not exists")
 
             os.system('mkdir -p upload')
-            fileUpload.save(f'upload/{fileName}')
+            file.save(f'upload/{fileName}')
 
             os.system(f'sh -ex updateWar.sh {tomcatPath} {fileName}')
             return {'status':1}
