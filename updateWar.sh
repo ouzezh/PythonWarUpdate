@@ -32,7 +32,7 @@ then
   unzip -o ${filePath} -d ${tomcatPath}/webapps/${context}
 elif [ "${fileType}" = "tgz" ]
 then
-  mkdir -p webapps/${context}
+  mkdir -p ${tomcatPath}/webapps/${context}
   tar -xf ${filePath} -C ${tomcatPath}/webapps/${context}
 else
   echo "fileType not support: ${fileType}"
