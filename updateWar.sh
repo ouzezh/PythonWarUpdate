@@ -39,5 +39,5 @@ else
   exit 1
 fi
 
-sh bin/startup.sh
+sh ${tomcatPath}/bin/startup.sh
 ps -ef | grep "${tomcatPath}" | grep -v "grep " | grep -v $0
