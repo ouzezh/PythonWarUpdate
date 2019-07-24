@@ -1,45 +1,39 @@
 #!/usr/bin/env sh
 tomcatPath=$1
-fileName=$2
+context=$2
+filePath=$3
 
 if [ -z "${tomcatPath}" ]
 then
   echo "tomcatPath is null"
   exit 1
-fi
-if [ -z "${fileName}" ]
-then
-  echo "fileName is null"
-  exit 1
-fi
-
-context=$(echo "${fileName}" | sed s/\\..*//)
-fileType=$(echo "${fileName}" | sed s/.*\\.//)
-
-if [ -z "${context}" ]
+elif [ -z "${context}" ]
 then
   echo "context is null"
   exit 1
+elif [ -z "${filePath}" ]
+then
+  echo "filePath is null"
+  exit 1
 fi
 
-wp=$(pwd)
-cd ${tomcatPath}
+fileType=$(echo "${filePath}" | sed s/.*\\.//)
 
 ps -ef | grep "${tomcatPath}" | grep -v "grep " | grep -v $0 && res=$? || res=$?
 if [ ${res} -eq 0 ]
 then
-  sh bin/shutdown.sh
+  sh ${tomcatPath}/bin/shutdown.sh
   sleep 10s
 fi
 
-rm -rf webapps/${context}/*
+rm -rf ${tomcatPath}/webapps/${context}/*
 if [ "${fileType}" = "war" ]
 then
-  unzip -o $wp/upload/${fileName} -d webapps/${context}
+  unzip -o ${filePath} -d ${tomcatPath}/webapps/${context}
 elif [ "${fileType}" = "tgz" ]
 then
   mkdir -p webapps/${context}
-  tar -xf $wp/upload/${fileName} -C webapps/${context}
+  tar -xf ${filePath} -C ${tomcatPath}/webapps/${context}
 else
   echo "fileType not support: ${fileType}"
   exit 1

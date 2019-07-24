@@ -32,10 +32,11 @@ class WarUpdate(Resource):
             if not file:
                 abort(500, "file not exists")
 
+            context=re.sub('\\..*', '', fileName)
             os.system('mkdir -p upload')
             file.save(f'upload/{fileName}')
 
-            os.system(f'sh -ex updateWar.sh {tomcatPath} {fileName}')
+            os.system(f'sh -ex updateWar.sh {tomcatPath} {context} upload/{fileName}')
             return {'status':1}
         except Exception as e:
             abort(500, str(e))
