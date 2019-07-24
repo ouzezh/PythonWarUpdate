@@ -26,7 +26,7 @@ then
   sleep 10s
 fi
 
-rm -rf ${tomcatPath}/webapps/${context}/*
+rm -rf "${tomcatPath}/webapps/${context}"
 if [ "${fileType}" = "war" ]
 then
   unzip -o ${filePath} -d ${tomcatPath}/webapps/${context}
