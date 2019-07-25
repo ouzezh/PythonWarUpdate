@@ -7,6 +7,10 @@ if [ -z "${tomcatPath}" ]
 then
   echo "tomcatPath is null"
   exit 1
+elif [ ! -d "${tomcatPath}/webapps" ]
+then
+  echo "path not exists: ${tomcatPath}/webapps"
+  exit 1
 elif [ -z "${context}" ]
 then
   echo "context is null"
