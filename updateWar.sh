@@ -5,7 +5,7 @@ filePath=$3
 
 if [ -z "${tomcatPath}" ]
 then
-  echo "tomcatPath is null"
+  echo "Usage: sh $0 [tomcatPath] [context] [filePath]"
   exit 1
 elif [ ! -d "${tomcatPath}/webapps" ]
 then
@@ -23,11 +23,32 @@ fi
 
 fileType=$(echo "${filePath}" | sed s/.*\\.//)
 
-ps -ef | grep "${tomcatPath}" | grep -v "grep " | grep -v $0 && res=$? || res=$?
-if [ ${res} -eq 0 ]
+function processCount() {
+  ps -ef | grep "$1" | grep -v "grep " | grep -v "$0" | wc -l
+}
+
+pc=$(processCount "${tomcatPath}")
+if [ ${pc} -gt 0 ]
 then
   sh ${tomcatPath}/bin/shutdown.sh
-  sleep 10s
+
+  for i in {1..30}
+  do
+    echo "check status $i time"
+    pc=$(processCount "${tomcatPath}")
+    if [ ${pc} -gt 0 ]
+    then
+      sleep 1s
+    else
+      break
+    fi
+  done
+
+  pc=$(processCount "${tomcatPath}")
+  if [ ${pc} -gt 0 ]
+  then
+    kill -9 $(ps -ef | grep "${tomcatPath}" | grep -v "grep " | grep -v "$0" | awk '{print $2}')
+  fi
 fi
 
 rm -rf "${tomcatPath}/webapps/${context}"
@@ -44,4 +65,22 @@ else
 fi
 
 sh ${tomcatPath}/bin/startup.sh
-ps -ef | grep "${tomcatPath}" | grep -v "grep " | grep -v $0
+
+for i in {1..30}
+do
+  echo "check status $i time"
+  pc=$(processCount "${tomcatPath}")
+  if [ ${pc} -le 0 ]
+  then
+    sleep 1s
+  else
+    break
+  fi
+done
+
+processCount "${tomcatPath}"
+if [ ${pc} -le 0 ]
+then
+  echo "startup error"
+  exit 1
+fi
