@@ -42,7 +42,7 @@ class WarUpdate(Resource):
         except Exception as e:
             abort(500, str(e))
         finally:
-            os.system('rm -rf swap.war')
+            os.system(f'rm -rf "upload/{fileName}"')
 
 
 api.add_resource(HelloWorld, '/')
