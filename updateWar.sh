@@ -32,7 +32,7 @@ if [ ${pc} -gt 0 ]
 then
   sh ${tomcatPath}/bin/shutdown.sh
 
-  for i in {1..30}
+  for i in {1..60}
   do
     echo "check status $i time"
     pc=$(processCount "${tomcatPath}")
@@ -66,7 +66,7 @@ fi
 
 sh ${tomcatPath}/bin/startup.sh
 
-for i in {1..30}
+for i in {1..60}
 do
   echo "check status $i time"
   pc=$(processCount "${tomcatPath}")
